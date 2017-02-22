@@ -7,7 +7,7 @@ github.com/irlrobot
 from __future__ import print_function
 
 APP_ID = 'amzn1.ask.skill.9dc6bb54-42b9-41a4-a5da-000663756fef'
-STREAM = 'http://aws.userdel.com/bensound-relaxing.mp3'
+STREAM = 'https://aws.userdel.com/bensound-relaxing.mp3'
 
 def play_audio():
     '''
@@ -46,6 +46,6 @@ def handler(event, context):
     if event['request']['type'] == "LaunchRequest":
         print ('LaunchRequest fired...')
         return play_audio()
-    elif event['request']['type'] == "IntentRequest":
+    if event['request']['type'] == "IntentRequest":
         print ('IntentRequest fired...')
         return play_audio()
