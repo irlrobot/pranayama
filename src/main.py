@@ -34,6 +34,23 @@ def play_audio():
         }
     }
 
+def stop_audio():
+    '''
+    Send AudioPlayer.Stop Directive
+    '''
+    return {
+        "version": "1.0",
+        "sessionAttributes": {},
+        "response": {
+            "directives": [
+                {
+                    "type": "AudioPlayer.Stop",
+                }
+            ],
+            "shouldEndSession": True
+        }
+    }
+
 def handler(event, context):
     '''
     main function for Lambda
@@ -49,3 +66,16 @@ def handler(event, context):
     if event['request']['type'] == "IntentRequest":
         print ('IntentRequest fired...')
         return play_audio()
+    if event['request']['type'] == "AMAZON.ResumeIntent":
+        print ('AMAZON.ResumeIntent fired...')
+        return play_audio()
+
+    if event['request']['type'] == "AMAZON.StopIntent":
+        print ('AMAZON.StopIntent fired...')
+        return stop_audio()
+    if event['request']['type'] == "AMAZON.CancelIntent":
+        print ('AMAZON.CancelIntent fired...')
+        return stop_audio()
+    if event['request']['type'] == "AMAZON.PauseIntent":
+        print ('AMAZON.PauseIntent fired...')
+        return stop_audio()
