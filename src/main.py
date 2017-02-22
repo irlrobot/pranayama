@@ -11,7 +11,7 @@ STREAM = 'https://aws.userdel.com/bensound-relaxing.mp3'
 
 def play_audio():
     '''
-    Build a response to play the audio stream
+    Send AudioPlayer.Play Directive
     '''
     return {
         "version": "1.0",
