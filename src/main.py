@@ -7,7 +7,7 @@ github.com/irlrobot
 from __future__ import print_function
 
 APP_ID = 'amzn1.ask.skill.9dc6bb54-42b9-41a4-a5da-000663756fef'
-STREAM = 'https://d38ybm4flaorq4.cloudfront.net/bensound-relaxing.mp3'
+STREAM = 'https://aws.userdel.com/bensound-relaxing.mp3'
 
 def play_audio():
     '''
