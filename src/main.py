@@ -5,6 +5,7 @@ v1.0.0
 github.com/irlrobot
 """
 from __future__ import print_function
+import json
 
 APP_ID = 'amzn1.ask.skill.9dc6bb54-42b9-41a4-a5da-000663756fef'
 STREAM = 'https://aws.userdel.com/bensound-relaxing.mp3'
@@ -55,27 +56,24 @@ def handler(event, context):
     '''
     main function for Lambda
     '''
-    print('lambda_handler started...')
-    print(event)
-    if event['session']['application']['applicationId'] != APP_ID:
-        raise ValueError("Invalid Application ID")
+    print('==============lambda_handler started...')
+    print(json.dumps(event))
 
-    if event['request']['type'] == "LaunchRequest":
-        print ('LaunchRequest fired...')
+    if event['request']['type'] == 'LaunchRequest':
+        print ('==============LaunchRequest fired...')
         return play_audio()
-    if event['request']['type'] == "IntentRequest":
-        print ('IntentRequest fired...')
+    if event['request']['intent']['name'] == 'PlayAudio':
+        print ('==============IntentRequest fired...')
         return play_audio()
-    if event['request']['type'] == "AMAZON.ResumeIntent":
-        print ('AMAZON.ResumeIntent fired...')
+    if event['request']['intent']['name'] == 'AMAZON.ResumeIntent':
+        print ('==============AMAZON.ResumeIntent fired...')
         return play_audio()
-
-    if event['request']['type'] == "AMAZON.StopIntent":
-        print ('AMAZON.StopIntent fired...')
+    if event['request']['intent']['name'] == 'AMAZON.StopIntent':
+        print ('==============AMAZON.StopIntent fired...')
         return stop_audio()
-    if event['request']['type'] == "AMAZON.CancelIntent":
-        print ('AMAZON.CancelIntent fired...')
+    if event['request']['intent']['name'] == 'AMAZON.CancelIntent':
+        print ('==============AMAZON.CancelIntent fired...')
         return stop_audio()
-    if event['request']['type'] == "AMAZON.PauseIntent":
-        print ('AMAZON.PauseIntent fired...')
+    if event['request']['intent']['name'] == 'AMAZON.PauseIntent':
+        print ('==============AMAZON.PauseIntent fired...')
         return stop_audio()
