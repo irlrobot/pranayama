@@ -10,7 +10,7 @@ import json
 APP_ID = 'amzn1.ask.skill.9dc6bb54-42b9-41a4-a5da-000663756fef'
 STREAM = 'https://aws.userdel.com/bensound-relaxing.mp3'
 
-def play_audio():
+def play_audio(behavior):
     '''
     Send AudioPlayer.Play Directive
     '''
@@ -21,7 +21,7 @@ def play_audio():
             "directives": [
                 {
                     "type": "AudioPlayer.Play",
-                    "playBehavior": "REPLACE_ALL",
+                    "playBehavior": behavior,
                     "audioItem": {
                         "stream": {
                             "token": "doesntreallymatter",
@@ -59,21 +59,35 @@ def handler(event, context):
     print('==============lambda_handler started...')
     print(json.dumps(event))
 
-    if event['request']['type'] == 'LaunchRequest':
+    try:
+        request_type = event['request']['type']
+    except KeyError:
+        request_type = ''
+
+    try:
+        intent_name = event['request']['intent']['name']
+    except KeyError:
+        intent_name = ''
+
+    if request_type == 'LaunchRequest':
         print ('==============LaunchRequest fired...')
-        return play_audio()
-    if event['request']['intent']['name'] == 'PlayAudio':
-        print ('==============IntentRequest fired...')
-        return play_audio()
-    if event['request']['intent']['name'] == 'AMAZON.ResumeIntent':
+        return play_audio('REPLACE_ALL')
+    if request_type == 'AudioPlayer.PlaybackNearlyFinished':
+        print ('==============AudioPlayer.PlaybackNearlyFinished fired...')
+        return play_audio('REPLACE_ENQUEUED')
+    if intent_name == 'PlayAudio':
+        print ('==============PlayAudio fired...')
+        return play_audio('REPLACE_ALL')
+    if intent_name == 'AMAZON.ResumeIntent':
         print ('==============AMAZON.ResumeIntent fired...')
-        return play_audio()
-    if event['request']['intent']['name'] == 'AMAZON.StopIntent':
+        return play_audio('REPLACE_ALL')
+
+    if intent_name == 'AMAZON.StopIntent':
         print ('==============AMAZON.StopIntent fired...')
         return stop_audio()
-    if event['request']['intent']['name'] == 'AMAZON.CancelIntent':
+    if intent_name == 'AMAZON.CancelIntent':
         print ('==============AMAZON.CancelIntent fired...')
         return stop_audio()
-    if event['request']['intent']['name'] == 'AMAZON.PauseIntent':
+    if intent_name == 'AMAZON.PauseIntent':
         print ('==============AMAZON.PauseIntent fired...')
         return stop_audio()
